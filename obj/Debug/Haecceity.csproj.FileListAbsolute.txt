@@ -1,0 +1,6 @@
+C:\Users\ardae\Desktop\Haecceity\Haecceity\bin\Haecceity.dll
+C:\Users\ardae\Desktop\Haecceity\Haecceity\bin\Haecceity.pdb
+C:\Users\ardae\Desktop\Haecceity\Haecceity\obj\Debug\Haecceity.csprojAssemblyReference.cache
+C:\Users\ardae\Desktop\Haecceity\Haecceity\obj\Debug\Haecceity.csproj.CoreCompileInputs.cache
+C:\Users\ardae\Desktop\Haecceity\Haecceity\obj\Debug\Haecceity.dll
+C:\Users\ardae\Desktop\Haecceity\Haecceity\obj\Debug\Haecceity.pdb
