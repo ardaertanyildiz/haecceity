@@ -16,9 +16,9 @@ namespace Haecceity
 
         public GhcFlock()
             : base(
-                  "Flocking Simulation",
-                  "Flocking Simulation",
-                  "Flocking Simulation",
+                  "Flock",
+                  "Flock",
+                  "Flock",
                   "Haecceity",
                   "Simulation")
         {
@@ -41,6 +41,10 @@ namespace Haecceity
             pManager[10].Optional = true;
             pManager.AddBooleanParameter("Use Parallel", "Use Parallel", "Use Parallel", GH_ParamAccess.item, false);
             pManager.AddBooleanParameter("Use R-Tree", "Use R-Tree", "Use R-Tree", GH_ParamAccess.item, false);
+
+            //pManager.AddBrepParameter("BoundingBox", "BoundingBox", "BoundingBox", GH_ParamAccess.item);
+            //pManager.AddBooleanParameter("Use KD-Tree", "Use KD-Tree", "Use KD-Tree", GH_ParamAccess.item, false);
+
         }
 
 
@@ -48,7 +52,7 @@ namespace Haecceity
         {
             pManager.AddTextParameter("Info", "Info", "Information", GH_ParamAccess.item);
             pManager.AddPointParameter("Positions", "Positions", "The agent positions", GH_ParamAccess.list);
-            pManager.AddVectorParameter("Velocities", "Velocities", "The agent veloctiies", GH_ParamAccess.list);
+            pManager.AddVectorParameter("Velocities", "Velocities", "The agent velocities", GH_ParamAccess.list);
         }
 
 
@@ -71,20 +75,47 @@ namespace Haecceity
             List<Circle> iRepellers = new List<Circle>();
             bool iUseParallel = false;
             bool iUseRTree = false;
+            //bool iUseKDTree = false;
+            //Brep AgentBox = new Brep();
 
-            DA.GetData("Reset", ref iReset);
-            DA.GetData("Play", ref iPlay);
-            DA.GetData("3D", ref i3D);
-            DA.GetData("Count", ref iCount);
-            DA.GetData("Timestep", ref iTimestep);
-            DA.GetData("Neighbourhood Radius", ref iNeighbourhoodRadius);
-            DA.GetData("Alignment", ref iAlignment);
-            DA.GetData("Cohesion", ref iCohesion);
-            DA.GetData("Separation", ref iSeparation);
-            DA.GetData("Separation Distance", ref iSeparationDistance);
-            DA.GetDataList("Repellers", iRepellers);
-            DA.GetData("Use Parallel", ref iUseParallel);
-            DA.GetData("Use R-Tree", ref iUseRTree);
+
+            if (!DA.GetData("Reset", ref iReset))return;
+            if (!DA.GetData("Play", ref iPlay)) return;
+            if (!DA.GetData("3D", ref i3D)) return;
+            if (!DA.GetData("Count", ref iCount)) return;
+            if (!DA.GetData("Timestep", ref iTimestep)) return;
+            if (!DA.GetData("Neighbourhood Radius", ref iNeighbourhoodRadius)) return;
+            if (!DA.GetData("Alignment", ref iAlignment)) return;
+            if (!DA.GetData("Cohesion", ref iCohesion)) return;
+            if (!DA.GetData("Separation", ref iSeparation)) return;
+            if (!DA.GetData("Separation Distance", ref iSeparationDistance)) return;
+            if (!DA.GetDataList("Repellers", iRepellers)) return;
+            if (!DA.GetData("Use Parallel", ref iUseParallel)) return;
+            if (!DA.GetData("Use R-Tree", ref iUseRTree)) return;
+            //if (!DA.GetData("Use KD-Tree", ref iUseKDTree)) return;
+            //if (!DA.GetData("BoundingBox", ref AgentBox)) return;
+
+            // ===============================================================================================
+            // Validate Data
+            // ===============================================================================================
+
+            if (iAlignment < 0.0)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Cohesion>Seperation for flocking");
+                return;
+            }
+
+            if (iCohesion < 0.0)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Cohesion>Seperation for flocking");
+                return;
+            }
+
+            if (iSeparation < 0.0)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Cohesion>Seperation for flocking");
+                return;
+            }
 
 
             // ===============================================================================================
@@ -109,13 +140,17 @@ namespace Haecceity
                 flockSystem.SeparationDistance = iSeparationDistance;
                 flockSystem.Repellers = iRepellers;
                 flockSystem.UseParallel = iUseParallel;
+                flockSystem.UseRTree = iUseRTree;
 
 
                 // ===============================================================================
                 // Update the flock
                 // ===============================================================================
 
-                flockSystem.Update();
+                if (iUseRTree)
+                    flockSystem.UpdateUsingRTree();
+                else
+                    flockSystem.Update();
 
                 if (iPlay) ExpireSolution(true);
             }

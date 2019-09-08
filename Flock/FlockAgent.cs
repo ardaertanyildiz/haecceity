@@ -52,7 +52,9 @@ namespace Haecceity.Flock
             // Inverse the vector if agent exceeds bounding box
             // ===============================================================================
 
+            //double boundingBoxX = Rhino.Geometry.BoundingBox()
             double boundingBoxSize = 30.0;
+            
 
             if (Position.X < 0.0)
                 desiredVelocity += new Vector3d(-Position.X, 0.0, 0.0);
@@ -121,13 +123,14 @@ namespace Haecceity.Flock
                 {
                     double distanceToNeighbour = Position.DistanceTo(neighbour.Position);
 
-                    if (distanceToNeighbour < FlockSystem.SeparationDistance)
+                    //if (distanceToNeighbour < FlockSystem.SeparationDistance)
+                    if (distanceToNeighbour <= FlockSystem.SeparationDistance)
                     {
                         Vector3d getAway = Position - neighbour.Position;
 
                         /* We scale the getAway vector by inverse of distanceToNeighbour to make 
                            the getAway vector bigger as the agent gets closer to its neighbour */
-                        separation += getAway / (getAway.Length * distanceToNeighbour);
+                        separation += getAway / (getAway.Length * distanceToNeighbour); //divide getaway.lenght to normalize 
                     }
 
 
@@ -148,7 +151,7 @@ namespace Haecceity.Flock
                 Vector3d repulsion = Position - repeller.Center;
 
                 // Repulstion gets stronger as the agent gets closer to the repeller
-                repulsion /= (repulsion.Length * distanceToRepeller);
+                repulsion /= (repulsion.Length * distanceToRepeller); //unititze by dividing repulsion length
 
                 // Repulsion strength is also proportional to the radius of the repeller circle/sphere
                 // This allows the user to tweak the repulsion strength by tweaking the radius
@@ -157,6 +160,10 @@ namespace Haecceity.Flock
                 desiredVelocity += repulsion;
 
             }
-        }
+
+            //TO DO:
+            //SET REPULSION STRENTH AS A SEPERATE PARAMETER
+            //SET REPULSION MESH
+        }   
     }
 }

@@ -18,7 +18,7 @@ namespace Haecceity
             get
             {
                 //Return a 24x24 pixel bitmap to represent this GHA library.
-                return null;
+                return Haecceity.Properties.Resources.Icon1.ToBitmap();
             }
         }
         public override string Description

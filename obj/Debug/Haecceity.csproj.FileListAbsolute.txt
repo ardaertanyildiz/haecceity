@@ -4,3 +4,5 @@ C:\Users\ardae\Desktop\Haecceity\Haecceity\obj\Debug\Haecceity.csprojAssemblyRef
 C:\Users\ardae\Desktop\Haecceity\Haecceity\obj\Debug\Haecceity.csproj.CoreCompileInputs.cache
 C:\Users\ardae\Desktop\Haecceity\Haecceity\obj\Debug\Haecceity.dll
 C:\Users\ardae\Desktop\Haecceity\Haecceity\obj\Debug\Haecceity.pdb
+C:\Users\ardae\Desktop\Haecceity\Haecceity\obj\Debug\Haecceity.Properties.Resources.resources
+C:\Users\ardae\Desktop\Haecceity\Haecceity\obj\Debug\Haecceity.csproj.GenerateResource.cache
